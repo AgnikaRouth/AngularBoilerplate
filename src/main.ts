@@ -9,7 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app/app.routes';
 // import { authGuard } from './app/core/guards/auth.guard';
 import { AuthenticationService } from './app/core/services/authentication.service';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 if (environment.production) {
   enableProdMode();
 }
@@ -20,9 +20,11 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideHttpClient(),
     AuthenticationService,
+    provideAnimationsAsync(),
     // provideGuard(authGuard),
   ],
 }).catch((err) => console.error(err));
+
 // function provideGuard(
 //   authGuard: CanActivateFn
 // ):

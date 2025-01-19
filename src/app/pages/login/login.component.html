@@ -1,1 +1,13 @@
-<p>login works!</p>
+<div [@fadeInAnimation]="animationState">
+  <p>Login works!</p>
+</div>
+
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter your name</mat-label>
+    <input matInput placeholder="Name" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="toggleAnimation()">
+    Login
+  </button>
+</div>
