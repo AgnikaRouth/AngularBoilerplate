@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="content">
-    <h1>Static Search (Signal)</h1>
+    <h1>Static Search (Signal-Static)</h1>
     <input
       type="text"
       placeholder="Search items..."
@@ -12,8 +12,9 @@
 
     <hr />
 
-    <h1>User Search (from API)</h1>
+    <h1>User Search (Signal-API)</h1>
     <input
+      class="search-box"
       type="text"
       placeholder="Search users..."
       (input)="updateUserSearch($event)"
