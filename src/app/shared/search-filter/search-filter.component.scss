@@ -1,0 +1,40 @@
+/* styles.scss or styles.css */
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+  background-color: #f39a9a;
+}
+
+.content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.content h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: cadetblue;
+  font-size: 1.5rem;
+}
+
+.content input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  color: #333;
+}
