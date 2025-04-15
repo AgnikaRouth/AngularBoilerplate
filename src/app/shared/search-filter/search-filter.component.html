@@ -1,11 +1,13 @@
 <div class="wrapper">
   <div class="content">
     <h1>Static Search (Signal-Static)</h1>
-    <input
-      type="text"
-      placeholder="Search items..."
-      (input)="updateSearch($event)"
-    />
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search items..."
+        (input)="updateSearch($event)"
+      />
+    </div>
     <ul>
       <li *ngFor="let item of filteredItems()">{{ item }}</li>
     </ul>
@@ -13,12 +15,14 @@
     <hr />
 
     <h1>User Search (Signal-API)</h1>
-    <input
-      class="search-box"
-      type="text"
-      placeholder="Search users..."
-      (input)="updateUserSearch($event)"
-    />
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search users..."
+        (input)="updateUserSearch($event)"
+      />
+    </div>
+
     <ul>
       <li *ngFor="let user of filteredUsers()">
         {{ user.firstName }} {{ user.lastName }} - {{ user.email }}
