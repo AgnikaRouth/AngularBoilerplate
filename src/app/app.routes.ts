@@ -8,6 +8,6 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent },
   { path: '**', redirectTo: 'home' }, // wildcard route
 ];

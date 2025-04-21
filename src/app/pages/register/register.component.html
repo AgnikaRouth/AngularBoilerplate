@@ -1,1 +1,70 @@
-<p>register works!</p>
+<!-- <form
+  [formGroup]="profileForm"
+  [trackGroup]="profileForm"
+  appTrackFormChanges
+  #tracker="tracker"
+  (formReset)="onReset()"
+>
+  <input formControlName="email" />
+  <input formControlName="username" />
+</form>
+
+<button [disabled]="!profileForm.dirty" (click)="save()">Save</button>
+<button (click)="tracker.resetForm()">Reset</button> -->
+
+<!-- TAILWIND CLASSES -->
+<form
+  [formGroup]="profileForm"
+  [trackGroup]="profileForm"
+  appTrackFormChanges
+  #tracker="tracker"
+  (formReset)="onReset()"
+  class="space-y-4 max-w-md p-6 bg-white shadow-md rounded-md border border-gray-200"
+>
+  <div class="flex flex-col">
+    <label for="email" class="text-sm font-medium text-gray-700 mb-1"
+      >Email</label
+    >
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <div class="flex flex-col">
+    <label for="username" class="text-sm font-medium text-gray-700 mb-1"
+      >Username</label
+    >
+    <input
+      id="username"
+      formControlName="username"
+      type="text"
+      class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <div class="flex space-x-4 pt-4">
+    <button
+      [disabled]="!profileForm.dirty"
+      (click)="save()"
+      class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+    >
+      Save
+    </button>
+
+    <button
+      (click)="tracker.resetForm()"
+      class="px-4 py-2 rounded-md bg-gray-100 text-gray-700 border border-gray-300 hover:bg-gray-200 transition"
+    >
+      Reset
+    </button>
+  </div>
+</form>
+<div
+  *ngIf="saved"
+  class="mt-4 text-green-700 bg-green-100 border border-green-300 px-4 py-2 rounded-md"
+>
+  ✅ Form saved successfully!
+</div>
