@@ -1,0 +1,112 @@
+<div class="w-full max-w-md mx-auto mt-10 p-6 border rounded-lg shadow">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <h2 class="text-2xl font-medium text-center mb-4">Enter User Details</h2>
+
+    <div>
+      <label>Name:</label>
+      <input
+        type="text"
+        formControlName="name"
+        class="border p-2 w-full rounded mt-2"
+      />
+    </div>
+
+    <div>
+      <label>Email:</label>
+      <input
+        type="email"
+        formControlName="email"
+        class="border p-2 w-full rounded mt-2"
+      />
+    </div>
+
+    <div>
+      <label>Phone Number:</label>
+      <input
+        type="tel"
+        formControlName="phoneNumber"
+        class="border p-2 w-full rounded mt-2"
+      />
+    </div>
+
+    <div class="flex">
+      <div>
+        <label>Age:</label>
+        <input
+          type="number"
+          formControlName="age"
+          class="border p-2 w-full rounded mt-2"
+        />
+      </div>
+
+      <div class="ms-2 w-48">
+        <label>Gender:</label>
+        <select
+          formControlName="gender"
+          class="border p-2 w-full rounded mt-2 cursor-pointer"
+        >
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label>Hobbies:</label>
+      <div formArrayName="hobbies" class="space-y-3 mt-2">
+        <div
+          *ngFor="let hobby of hobbies.controls; let i = index"
+          class="flex gap-2 items-center"
+        >
+          <input
+            type="text"
+            [formControlName]="i"
+            class="border p-2 flex-1 rounded"
+          />
+
+          <!-- Remove button only if index > 0 -->
+          <button
+            *ngIf="i > 0"
+            type="button"
+            (click)="removeHobby(i)"
+            class="bg-red-500 text-white px-2 py-1 rounded"
+          >
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+
+          <!-- Add Hobby button only beside last field -->
+          <button
+            *ngIf="i === hobbies.length - 1"
+            type="button"
+            (click)="addHobby()"
+            class="bg-blue-500 text-white px-2 py-1 rounded"
+          >
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          formControlName="agreeToTerms"
+          class="mr-2 cursor-pointer"
+        />
+        I agree to the terms and conditions
+      </label>
+    </div>
+
+    <div class="text-center">
+      <button
+        type="submit"
+        class="bg-green-500 text-white px-6 py-2 rounded mt-6"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
