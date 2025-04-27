@@ -35,8 +35,8 @@ export class UserFormComponent {
       basicDetails: this.fb.group({
         name: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        phoneNumber: ['', Validators.required],
-        age: ['', Validators.required],
+        phoneNumber: ['', [Validators.required, Validators.maxLength(10)]],
+        age: ['', [Validators.required, Validators.max(100)]],
         gender: ['', Validators.required],
       }),
       hobbies: this.fb.array([this.fb.control('')]),
@@ -61,7 +61,6 @@ export class UserFormComponent {
     return this.userForm.get('certificates') as FormArray;
   }
 
-  // Add helper method to get FormArray controls for template
   getFormArrayControls(formArray: FormArray) {
     return formArray.controls;
   }
@@ -69,7 +68,7 @@ export class UserFormComponent {
 
   addField(field: FormArray) {
     if (field.length < this.maxEntries) {
-      field.push(this.fb.control('', Validators.required));
+      field.push(this.fb.control(''));
     }
   }
 
@@ -81,10 +80,29 @@ export class UserFormComponent {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log(this.userForm.value);
-      this.submittedData = this.userForm.value;
+      const formData = this.userForm.value;
+
+      formData.hobbies = formData.hobbies.filter((hobby: string) =>
+        hobby?.trim()
+      );
+
+      formData.skills = formData.skills.filter((skill: string) =>
+        skill?.trim()
+      );
+
+      formData.certificates = formData.certificates.filter((cert: string) =>
+        cert?.trim()
+      );
+
+      // console.log(formData);
+      this.submittedData = formData;
     } else {
       this.userForm.markAllAsTouched();
     }
+  }
+  resetForm() {
+    this.userForm.reset({
+      gender: '',
+    });
   }
 }

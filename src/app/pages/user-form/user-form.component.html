@@ -1,7 +1,14 @@
 <div class="flex justify-center mt-10">
-  <div class="w-full max-w-4xl p-6 rounded-lg shadow-md border-b-4">
+  <div
+    class="w-full max-w-4xl p-6 rounded-lg shadow-xl/30 border-2 border-gray-300"
+  >
     <form [formGroup]="userForm">
-      <mat-horizontal-stepper linear #stepper [(selectedIndex)]="currentStep">
+      <mat-horizontal-stepper
+        linear
+        #stepper
+        [(selectedIndex)]="currentStep"
+        style="background: rgba(226, 224, 224, 0.479); border-radius: 10px"
+      >
         <!-- Step 1: Basic Details -->
         <mat-step [stepControl]="basicDetails">
           <ng-template matStepLabel>Basic Details</ng-template>
@@ -88,7 +95,7 @@
               <label class="block font-normal">Gender:</label>
               <select
                 formControlName="gender"
-                class="w-full p-2 border rounded"
+                class="w-full p-2 border rounded cursor-pointer"
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -108,7 +115,7 @@
             <div class="flex justify-end mt-6">
               <button
                 type="button"
-                class="px-4 py-2 bg-blue-600 text-white rounded"
+                class="px-8 py-2 bg-blue-800 text-white rounded"
                 [disabled]="!basicDetails.valid"
                 (click)="stepper.next()"
               >
@@ -121,9 +128,9 @@
         <!-- Step 2: Hobbies -->
         <mat-step [stepControl]="hobbies">
           <ng-template matStepLabel>Hobbies</ng-template>
-          <h2 class="text-2xl font-semibold mb-4">Hobbies</h2>
 
           <div formArrayName="hobbies" class="space-y-3 max-w-xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-4">Hobbies</h2>
             <div
               *ngFor="let hobby of getFormArrayControls(hobbies); let i = index"
               class="flex gap-2"
@@ -138,36 +145,34 @@
               <button
                 type="button"
                 class="px-2 py-1 bg-red-500 text-white rounded"
-                *ngIf="hobbies.length > 1"
+                *ngIf="i > 0"
                 (click)="removeField(hobbies, i)"
               >
-                Remove
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+              <button
+                type="button"
+                class="px-4 py-2 bg-green-600 text-white rounded"
+                *ngIf="i === hobbies.length - 1"
+                (click)="addField(hobbies)"
+                [disabled]="hobbies.length >= maxEntries"
+              >
+                <fa-icon [icon]="faPlus"></fa-icon>
               </button>
             </div>
-          </div>
-
-          <div class="flex justify-end mt-4">
-            <button
-              type="button"
-              class="px-4 py-2 bg-green-600 text-white rounded"
-              (click)="addField(hobbies)"
-              [disabled]="hobbies.length >= maxEntries"
-            >
-              Add Hobby
-            </button>
           </div>
 
           <div class="flex justify-between mt-6">
             <button
               type="button"
-              class="px-4 py-2 bg-gray-600 text-white rounded"
+              class="px-8 py-2 bg-slate-800 text-white rounded"
               (click)="stepper.previous()"
             >
               Back
             </button>
             <button
               type="button"
-              class="px-4 py-2 bg-blue-600 text-white rounded"
+              class="px-8 py-2 bg-blue-800 text-white rounded"
               [disabled]="hobbies.invalid"
               (click)="stepper.next()"
             >
@@ -179,9 +184,9 @@
         <!-- Step 3: Skills -->
         <mat-step [stepControl]="skills">
           <ng-template matStepLabel>Skills</ng-template>
-          <h2 class="text-2xl font-semibold mb-4">Skills</h2>
 
           <div formArrayName="skills" class="space-y-3 max-w-xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-4">Skills</h2>
             <div
               *ngFor="let skill of getFormArrayControls(skills); let i = index"
               class="flex gap-2"
@@ -196,36 +201,39 @@
               <button
                 type="button"
                 class="px-2 py-1 bg-red-500 text-white rounded"
-                *ngIf="skills.length > 1"
+                *ngIf="i > 0"
                 (click)="removeField(skills, i)"
               >
-                Remove
+                <fa-icon [icon]="faTrash"></fa-icon>
               </button>
+              <button
+                type="button"
+                class="px-4 py-2 bg-green-600 text-white rounded"
+                (click)="addField(skills)"
+                *ngIf="i === skills.length - 1"
+                [disabled]="skills.length >= maxEntries"
+              >
+                <fa-icon [icon]="faPlus"></fa-icon>
+              </button>
+              <div
+                *ngIf="skills.controls[i].touched && skills.controls[i].invalid"
+                class="text-red-500 text-sm ml-1"
+              >
+                Skill is required
+              </div>
             </div>
           </div>
-
-          <div class="flex justify-end mt-4">
-            <button
-              type="button"
-              class="px-4 py-2 bg-green-600 text-white rounded"
-              (click)="addField(skills)"
-              [disabled]="skills.length >= maxEntries"
-            >
-              Add Skill
-            </button>
-          </div>
-
           <div class="flex justify-between mt-6">
             <button
               type="button"
-              class="px-4 py-2 bg-gray-600 text-white rounded"
+              class="px-8 py-2 bg-slate-800 text-white rounded"
               (click)="stepper.previous()"
             >
               Back
             </button>
             <button
               type="button"
-              class="px-4 py-2 bg-blue-600 text-white rounded"
+              class="px-8 py-2 bg-blue-800 text-white rounded"
               [disabled]="skills.invalid"
               (click)="stepper.next()"
             >
@@ -237,9 +245,9 @@
         <!-- Step 4: Certificates and Terms -->
         <mat-step [stepControl]="certificates">
           <ng-template matStepLabel>Certificates & Terms</ng-template>
-          <h2 class="text-2xl font-semibold mb-4">Certificates</h2>
 
-          <div formArrayName="certificates" class="space-y-3 max-w-xl">
+          <div formArrayName="certificates" class="space-y-3 max-w-xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-4">Certificates</h2>
             <div
               *ngFor="
                 let cert of getFormArrayControls(certificates);
@@ -257,33 +265,34 @@
               <button
                 type="button"
                 class="px-2 py-1 bg-red-500 text-white rounded"
-                *ngIf="certificates.length > 1"
+                *ngIf="i > 0"
                 (click)="removeField(certificates, i)"
               >
-                Remove
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+              <button
+                type="button"
+                class="px-4 py-2 bg-green-600 text-white rounded"
+                (click)="addField(certificates)"
+                *ngIf="i === certificates.length - 1"
+                [disabled]="certificates.length >= maxEntries"
+              >
+                <fa-icon [icon]="faPlus"></fa-icon>
               </button>
             </div>
           </div>
-
-          <div class="flex justify-end mt-4">
-            <button
-              type="button"
-              class="px-4 py-2 bg-green-600 text-white rounded"
-              (click)="addField(certificates)"
-              [disabled]="certificates.length >= maxEntries"
-            >
-              Add Certificate
-            </button>
-          </div>
-
-          <div class="mt-6">
+          <div class="mt-6 max-w-xl mx-auto">
             <label class="inline-flex items-center">
-              <input type="checkbox" formControlName="terms" class="mr-2" />
+              <input
+                type="checkbox"
+                formControlName="terms"
+                class="mr-2 cursor-pointer"
+              />
               <span>I agree to the terms and conditions</span>
             </label>
             <div
               *ngIf="
-                userForm.get('terms')?.touched && userForm.get('terms')?.invalid
+                userForm.get('terms')?.touched || userForm.get('terms')?.invalid
               "
               class="text-red-500 text-sm"
             >
@@ -301,7 +310,11 @@
             </button>
             <button
               type="button"
-              class="px-4 py-2 bg-green-600 text-white rounded"
+              class="px-8 py-2 text-white rounded"
+              [ngClass]="{
+                'bg-green-800': userForm.valid,
+                'bg-green-200': !userForm.valid
+              }"
               [disabled]="!userForm.valid"
               (click)="onSubmit(); stepper.next()"
             >
@@ -310,7 +323,6 @@
           </div>
         </mat-step>
 
-        <!-- Step 5: Output -->
         <!-- Step 5: Output -->
         <mat-step>
           <ng-template matStepLabel>Submitted Data</ng-template>
@@ -353,28 +365,26 @@
                     submittedData.basicDetails.gender
                   }}</span>
                 </p>
+                <p class="font-semibold mb-2">
+                  Agreed to Terms:
+                  <span class="font-normal">{{
+                    submittedData.terms ? "Yes" : "No"
+                  }}</span>
+                </p>
               </div>
 
-              <!-- Terms -->
-              <p class="font-semibold mb-2">
-                Agreed to Terms:
-                <span class="font-normal">{{
-                  submittedData.terms ? "Yes" : "No"
-                }}</span>
-              </p>
-
               <!-- Hobbies -->
-              <div class="mb-4">
+              <div class="mb-4" *ngIf="submittedData?.hobbies.length > 0">
                 <p class="font-semibold mb-1">Hobbies:</p>
                 <ul class="list-disc pl-6">
-                  <li *ngFor="let hobby of submittedData.hobbies">
+                  <li *ngFor="let hobby of submittedData?.hobbies">
                     {{ hobby }}
                   </li>
                 </ul>
               </div>
 
               <!-- Skills -->
-              <div class="mb-4">
+              <div class="mb-4" *ngIf="submittedData?.hobbies.length > 0">
                 <p class="font-semibold mb-1">Skills:</p>
                 <ul class="list-disc pl-6">
                   <li *ngFor="let skill of submittedData.skills">
@@ -384,7 +394,7 @@
               </div>
 
               <!-- Certificates -->
-              <div>
+              <div *ngIf="submittedData?.hobbies.length > 0">
                 <p class="font-semibold mb-1">Certificates:</p>
                 <ul class="list-disc pl-6">
                   <li *ngFor="let cert of submittedData.certificates">
@@ -397,8 +407,8 @@
             <div class="flex justify-center mt-6">
               <button
                 type="button"
-                class="px-4 py-2 bg-blue-600 text-white rounded"
-                (click)="stepper.reset(); userForm.reset()"
+                class="px-8 py-2 bg-red-900 text-white rounded"
+                (click)="resetForm(); stepper.reset()"
               >
                 Reset
               </button>
