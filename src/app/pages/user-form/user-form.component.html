@@ -292,7 +292,7 @@
             </label>
             <div
               *ngIf="
-                userForm.get('terms')?.touched || userForm.get('terms')?.invalid
+                userForm.get('terms')?.touched && userForm.get('terms')?.invalid
               "
               class="text-red-500 text-sm"
             >
