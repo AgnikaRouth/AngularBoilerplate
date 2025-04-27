@@ -9,10 +9,16 @@ import {
 } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-user-form',
-  imports: [ReactiveFormsModule, CommonModule, FontAwesomeModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    FontAwesomeModule,
+    MatStepperModule,
+  ],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
 })
@@ -21,71 +27,62 @@ export class UserFormComponent {
   faTrash = faTrash;
   faPlus = faPlus;
   submittedData: any = null;
+  maxEntries = 5;
+  currentStep = 0;
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
-      name: this.fb.control('', [Validators.required]),
-      email: this.fb.control('', [Validators.required, Validators.email]),
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
-      ],
-      age: this.fb.control('', [Validators.required, Validators.min(0)]),
-      gender: this.fb.control('', Validators.required),
-      agreeToTerms: this.fb.control(false, Validators.requiredTrue),
+      basicDetails: this.fb.group({
+        name: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        phoneNumber: ['', Validators.required],
+        age: ['', Validators.required],
+        gender: ['', Validators.required],
+      }),
       hobbies: this.fb.array([this.fb.control('')]),
       skills: this.fb.array([this.fb.control('')]),
       certificates: this.fb.array([this.fb.control('')]),
+      terms: [false, Validators.requiredTrue],
     });
   }
 
-  // hobbies
+  get basicDetails() {
+    return this.userForm.get('basicDetails') as FormGroup;
+  }
   get hobbies(): FormArray {
     return this.userForm.get('hobbies') as FormArray;
   }
-
-  addHobby() {
-    this.hobbies.push(this.fb.control(''));
-  }
-
-  removeHobby(index: number) {
-    this.hobbies.removeAt(index);
-  }
-
-  // skills
 
   get skills(): FormArray {
     return this.userForm.get('skills') as FormArray;
   }
 
-  addSkill() {
-    this.skills.push(this.fb.control(''));
-  }
-
-  removeSkill(index: number) {
-    this.skills.removeAt(index);
-  }
-
-  // certificates
-
   get certificates(): FormArray {
     return this.userForm.get('certificates') as FormArray;
   }
-  addCertificate() {
-    this.certificates.push(this.fb.control(''));
+
+  // Add helper method to get FormArray controls for template
+  getFormArrayControls(formArray: FormArray) {
+    return formArray.controls;
+  }
+  // add/remove fields
+
+  addField(field: FormArray) {
+    if (field.length < this.maxEntries) {
+      field.push(this.fb.control('', Validators.required));
+    }
   }
 
-  removeCertificate(index: number) {
-    this.certificates.removeAt(index);
+  removeField(field: FormArray, index: number) {
+    if (field.length > 1) {
+      field.removeAt(index);
+    }
   }
 
   onSubmit() {
     if (this.userForm.valid) {
       console.log(this.userForm.value);
       this.submittedData = this.userForm.value;
-      // this.userForm.reset();
-      // this.hobbies.clear();
-      // this.hobbies.push(this.fb.control(''));
     } else {
       this.userForm.markAllAsTouched();
     }
