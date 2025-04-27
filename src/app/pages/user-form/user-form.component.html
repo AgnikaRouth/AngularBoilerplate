@@ -1,87 +1,167 @@
-<div class="w-full max-w-md mx-auto mt-10 p-6 border rounded-lg shadow">
-  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <h2 class="text-2xl font-medium text-center mb-4">Enter User Details</h2>
+<div
+  class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4"
+>
+  <form
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+    class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6"
+  >
+    <h2 class="text-2xl font-bold text-center mb-6">User Registration</h2>
 
-    <div>
-      <label>Name:</label>
+    <!-- Name Field -->
+    <div class="space-y-1">
+      <label class="block font-medium">Name:</label>
       <input
         type="text"
         formControlName="name"
-        class="border p-2 w-full rounded mt-2"
+        class="border p-2 rounded w-full"
       />
+      <div
+        *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid"
+        class="text-red-500 text-sm"
+      >
+        Name is required.
+      </div>
     </div>
 
-    <div>
-      <label>Email:</label>
+    <!-- Email Field -->
+    <div class="space-y-1">
+      <label class="block font-medium">Email:</label>
       <input
         type="email"
         formControlName="email"
-        class="border p-2 w-full rounded mt-2"
+        class="border p-2 rounded w-full"
       />
+      <div
+        *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid"
+        class="text-red-500 text-sm"
+      >
+        <div *ngIf="userForm.get('email')?.errors?.['required']">
+          Email is required.
+        </div>
+        <div *ngIf="userForm.get('email')?.errors?.['email']">
+          Invalid email format.
+        </div>
+      </div>
     </div>
 
-    <div>
-      <label>Phone Number:</label>
+    <!-- Phone Number Field -->
+    <div class="space-y-1">
+      <label class="block font-medium">Phone Number:</label>
       <input
         type="tel"
         formControlName="phoneNumber"
-        class="border p-2 w-full rounded mt-2"
+        class="border p-2 rounded w-full"
       />
-    </div>
-
-    <div class="flex">
-      <div>
-        <label>Age:</label>
-        <input
-          type="number"
-          formControlName="age"
-          class="border p-2 w-full rounded mt-2"
-        />
-      </div>
-
-      <div class="ms-2 w-48">
-        <label>Gender:</label>
-        <select
-          formControlName="gender"
-          class="border p-2 w-full rounded mt-2 cursor-pointer"
-        >
-          <option value="">Select</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+      <div
+        *ngIf="
+          userForm.get('phoneNumber')?.touched &&
+          userForm.get('phoneNumber')?.invalid
+        "
+        class="text-red-500 text-sm"
+      >
+        <div *ngIf="userForm.get('phoneNumber')?.errors?.['required']">
+          Phone number is required.
+        </div>
+        <div *ngIf="userForm.get('phoneNumber')?.errors?.['pattern']">
+          Enter a valid 10-digit number.
+        </div>
       </div>
     </div>
 
-    <div>
-      <label>Hobbies:</label>
-      <div formArrayName="hobbies" class="space-y-3 mt-2">
+    <!-- Age Field -->
+    <div class="space-y-1">
+      <label class="block font-medium">Age:</label>
+      <input
+        type="number"
+        formControlName="age"
+        class="border p-2 rounded w-full"
+      />
+      <div
+        *ngIf="userForm.get('age')?.touched && userForm.get('age')?.invalid"
+        class="text-red-500 text-sm"
+      >
+        Age is required.
+      </div>
+    </div>
+
+    <!-- Gender Field -->
+    <div class="space-y-1">
+      <label class="block font-medium">Gender:</label>
+      <select formControlName="gender" class="border p-2 rounded w-full">
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+      <div
+        *ngIf="
+          userForm.get('gender')?.touched && userForm.get('gender')?.invalid
+        "
+        class="text-red-500 text-sm"
+      >
+        Gender is required.
+      </div>
+    </div>
+
+    <!-- Hobbies -->
+    <div class="space-y-2">
+      <label class="block font-medium">Hobbies:</label>
+      <div formArrayName="hobbies" class="space-y-3">
         <div
           *ngFor="let hobby of hobbies.controls; let i = index"
-          class="flex gap-2 items-center"
+          class="flex items-center gap-2"
         >
           <input
             type="text"
             [formControlName]="i"
-            class="border p-2 flex-1 rounded"
+            class="border p-2 rounded flex-1"
           />
-
-          <!-- Remove button only if index > 0 -->
           <button
             *ngIf="i > 0"
             type="button"
             (click)="removeHobby(i)"
-            class="bg-red-500 text-white px-2 py-1 rounded"
+            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
           >
             <fa-icon [icon]="faTrash"></fa-icon>
           </button>
-
-          <!-- Add Hobby button only beside last field -->
           <button
             *ngIf="i === hobbies.length - 1"
             type="button"
             (click)="addHobby()"
-            class="bg-blue-500 text-white px-2 py-1 rounded"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+          >
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Skills -->
+    <div class="space-y-2">
+      <label class="block font-medium">Skills:</label>
+      <div formArrayName="skills" class="space-y-3">
+        <div
+          *ngFor="let skill of skills.controls; let i = index"
+          class="flex items-center gap-2"
+        >
+          <input
+            type="text"
+            [formControlName]="i"
+            class="border p-2 rounded flex-1"
+          />
+          <button
+            *ngIf="i > 0"
+            type="button"
+            (click)="removeSkill(i)"
+            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+          >
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+          <button
+            *ngIf="i === skills.length - 1"
+            type="button"
+            (click)="addSkill()"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
           >
             <fa-icon [icon]="faPlus"></fa-icon>
           </button>
@@ -89,7 +169,41 @@
       </div>
     </div>
 
-    <div>
+    <!-- Certificates -->
+    <div class="space-y-2">
+      <label class="block font-medium">Certificates:</label>
+      <div formArrayName="certificates" class="space-y-3">
+        <div
+          *ngFor="let certificate of certificates.controls; let i = index"
+          class="flex items-center gap-2"
+        >
+          <input
+            type="text"
+            [formControlName]="i"
+            class="border p-2 rounded flex-1"
+          />
+          <button
+            *ngIf="i > 0"
+            type="button"
+            (click)="removeCertificate(i)"
+            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+          >
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </button>
+          <button
+            *ngIf="i === certificates.length - 1"
+            type="button"
+            (click)="addCertificate()"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+          >
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agree to Terms -->
+    <div class="space-y-1">
       <label class="flex items-center">
         <input
           type="checkbox"
@@ -98,15 +212,65 @@
         />
         I agree to the terms and conditions
       </label>
+      <div
+        *ngIf="
+          userForm.get('agreeToTerms')?.touched &&
+          userForm.get('agreeToTerms')?.invalid
+        "
+        class="text-red-500 text-sm"
+      >
+        You must agree to the terms.
+      </div>
     </div>
 
+    <!-- Submit Button -->
     <div class="text-center">
       <button
         type="submit"
-        class="bg-green-500 text-white px-6 py-2 rounded mt-6"
+        class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full"
       >
         Submit
       </button>
     </div>
   </form>
+
+  <!-- Submitted Data -->
+  <div
+    *ngIf="submittedData"
+    class="mt-10 bg-white p-6 rounded-2xl shadow-md w-full max-w-[28rem] space-y-4"
+  >
+    <h3 class="text-xl font-bold text-center">Submitted Data</h3>
+    <div class="space-y-2">
+      <p><strong>Name:</strong> {{ submittedData.name }}</p>
+      <p><strong>Email:</strong> {{ submittedData.email }}</p>
+      <p><strong>Phone Number:</strong> {{ submittedData.phoneNumber }}</p>
+      <p><strong>Age:</strong> {{ submittedData.age }}</p>
+      <p><strong>Gender:</strong> {{ submittedData.gender }}</p>
+      <p>
+        <strong>Agreed to Terms:</strong>
+        {{ submittedData.agreeToTerms ? "Yes" : "No" }}
+      </p>
+      <div>
+        <strong>Hobbies:</strong>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let hobby of submittedData.hobbies">{{ hobby }}</li>
+        </ul>
+      </div>
+      <div>
+        <strong>Skills:</strong>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let skill of submittedData.skills">{{ skill }}</li>
+        </ul>
+      </div>
+
+      <div>
+        <strong>Certificates:</strong>
+        <ul class="list-disc list-inside">
+          <li *ngFor="let certificate of submittedData.certificates">
+            {{ certificate }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
